@@ -1,0 +1,12 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: service-registry1
+    appname: service-registry
+  environment: local
+  client:
+    service-url:
+      defaultZone: http://service-registry2:8762/eureka
+    register-with-eureka: true
+    fetch-registry: true
