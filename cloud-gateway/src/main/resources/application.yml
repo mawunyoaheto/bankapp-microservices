@@ -7,11 +7,15 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: customer-service
-          uri: http://localhost:8100/
-          predicates:
-            - path: /customers/**
-        - id: acoounts-service
-          uri: http://localhost:8200/
-          predicates:
-            - path: /accounts/**
+      - id: customerService
+        uri: lb://customer-service
+        predicates:
+        - Path=/customers/**
+      - id: acoountsService
+        uri: lb://account-service
+        predicates:
+        - Path=/accounts/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
