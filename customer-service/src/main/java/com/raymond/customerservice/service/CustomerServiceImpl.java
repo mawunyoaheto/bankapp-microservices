@@ -6,6 +6,7 @@ import com.raymond.customerservice.entity.Customer;
 import com.raymond.customerservice.exceptions.CustomerNotFoundException;
 import com.raymond.customerservice.feign.AccountFeignClient;
 import com.raymond.customerservice.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService{
     @Autowired
     private CustomerRepository customerRepository;
@@ -25,16 +27,19 @@ public class CustomerServiceImpl implements CustomerService{
     @Transactional
     public CustomerAccountDTO createAccount(Customer customer) {
         Customer newCustomer = customerRepository.save(customer);
+        log.info("Customer details: "+newCustomer);
         AccountDTO newAccount = new AccountDTO();
         newAccount.setAccountType("SAVINGS");
         newAccount.setCustomerId(newCustomer.getId());
-        newAccount.setCurrentBalance(newAccount.getOpeningBalance());
+        newAccount.setCurrentBalance(0.00);
+        newAccount.setAccountStatus("ACTIVE");
         newAccount.setOpenDate(LocalDate.now());
-        accountFeignClient.createAccount(newAccount);
+        log.info("account DTO: "+newAccount);
+        AccountDTO savedAccount = accountFeignClient.createAccount(newAccount);
 
         CustomerAccountDTO newAccountDTO = new CustomerAccountDTO();
         newAccountDTO.setCustomerDetails(newCustomer);
-        newAccountDTO.getAccounts().add(newAccount);
+        newAccountDTO.addAccount(savedAccount);
         return newAccountDTO;
     }
 

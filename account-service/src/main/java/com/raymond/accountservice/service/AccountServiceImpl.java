@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @Service
+@Slf4j
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
@@ -23,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account addAccount(Account account) {
+
         AccountEntry accountEntry = new AccountEntry();
         Account newAccount = accountRepository.save(account);
         accountEntry.setAccountId(newAccount.getId());
@@ -31,6 +33,8 @@ public class AccountServiceImpl implements AccountService {
         accountEntry.setTransactionDate(LocalDate.now());
         accountEntry.setTransactionType(TransactionType.DEPOSIT);
         accountEntryRepository.save(accountEntry);
+        log.info("account entry: "+accountEntry);
+        log.info("Account information: "+newAccount);
         return newAccount;
     }
 }

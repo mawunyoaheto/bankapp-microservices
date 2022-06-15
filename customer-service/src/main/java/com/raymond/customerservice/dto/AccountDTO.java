@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDTO {
+    private Long id;
     private Long customerId;
     private String accountType;
     private double openingBalance;

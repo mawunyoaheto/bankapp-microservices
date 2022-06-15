@@ -18,7 +18,7 @@ public class Customer {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     //private List<Account> accounts;
 }
