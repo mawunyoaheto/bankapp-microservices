@@ -20,7 +20,8 @@ public class AccountEntry {
     private Long id;
     private Long accountId;
     private double transactionAmount;
-    private double accountBalance;
+    private double openingBalance;
+    private double closingBalance;
     private TransactionType transactionType;
     private LocalDate transactionDate;
 }
